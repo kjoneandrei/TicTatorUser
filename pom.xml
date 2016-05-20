@@ -15,7 +15,7 @@
 		<jstl.version>1.2</jstl.version>
 		<junit.version>4.11</junit.version>
 		<logback.version>1.0.13</logback.version>
-		<mysql.version>6.0.2</mysql.version>
+		<mysql.version>5.1.39</mysql.version>
 		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
 	</properties>
 

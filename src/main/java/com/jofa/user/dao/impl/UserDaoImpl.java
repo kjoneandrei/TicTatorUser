@@ -2,52 +2,104 @@ package com.jofa.user.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Repository;
 
 import com.jofa.user.dao.UserDao;
 import com.jofa.user.model.User;
-import com.jofa.util.CustomHibernateDaoSupport;
 
-@Repository("stockDao")
-public class UserDaoImpl extends CustomHibernateDaoSupport implements UserDao {
+@Repository("userDao")
+public class UserDaoImpl implements UserDao<User, String> {
 
+	private Session currentSession;
+    private Transaction currentTransaction;
+    
+    public UserDaoImpl() {
+    }
+
+    public Session openCurrentSession() {
+		currentSession = getSessionFactory().openSession();
+		return currentSession;
+	}
+
+	public Session openCurrentSessionwithTransaction() {
+		currentSession = getSessionFactory().openSession();
+		currentTransaction = currentSession.beginTransaction();
+		return currentSession;
+	}
+	
+	public void closeCurrentSession() {
+		currentSession.close();
+	}
+	
+	public void closeCurrentSessionwithTransaction() {
+		currentTransaction.commit();
+		currentSession.close();
+	}
+	
+	private static SessionFactory getSessionFactory() {
+		Configuration configuration = new Configuration().configure();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+				.applySettings(configuration.getProperties());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+		return sessionFactory;
+	}
+
+	public Session getCurrentSession() {
+		return currentSession;
+	}
+
+	public void setCurrentSession(Session currentSession) {
+		this.currentSession = currentSession;
+	}
+
+	public Transaction getCurrentTransaction() {
+		return currentTransaction;
+	}
+
+	public void setCurrentTransaction(Transaction currentTransaction) {
+		this.currentTransaction = currentTransaction;
+	}
+	
 	@Override
-	public void save(User user) {
-		getHibernateTemplate().save(user);
-
+	public void persist(User entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void update(User user) {
-		getHibernateTemplate().update(user);
-
+	public void update(User entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void delete(User user) {
-		getHibernateTemplate().delete(user);
-
+	public User findById(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public User findById(Integer id) {
-		List list = getHibernateTemplate()
-				.find("from User where id=?", id);
-		return (User) list.get(0);
+	public void delete(User entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public User findByUsername(String username) {
-		List list = getHibernateTemplate()
-				.find("from User where username=?", username);
-		return (User) list.get(0);
+	public List<User> findAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public User findByEmail(String email) {
-		List list = getHibernateTemplate()
-				.find("from User where email=?", email);
-		return (User) list.get(0);
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		
 	}
+
 
 }

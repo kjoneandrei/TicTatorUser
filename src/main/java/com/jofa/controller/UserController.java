@@ -1,16 +1,17 @@
 package com.jofa.controller;
 
+import java.util.List;
+
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jofa.user.bo.UserBo;
 import com.jofa.user.model.User;
+import com.jofa.user.service.UserService;
+
 
 @Controller
 public class UserController {
@@ -34,40 +35,66 @@ public class UserController {
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public String welcomeName(@PathVariable String name, ModelMap model) {
 
-		@SuppressWarnings("resource")
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring/config/BeanLocations.xml");
-
-		UserBo stockBo = (UserBo) appContext.getBean("UserBo");
-
-		/** insert **/
-		User user = new User();
-		user.setId(999);
-		user.setEmail("anemail");
-		user.setAdmin(true);
-		user.setPassword("verypassword");
-		user.setUserName("CUNT");
-		stockBo.save(user);
-
-		/** select **/
-		User user2 = stockBo.findById(999);
-		System.out.println(user2);
-
-		/** update **/
-		user2.setUserName("SONGOKU");
-		stockBo.update(user2);
-
-		User user3 = stockBo.findById(999);
-		System.out.println("Changed username to:" + user3.getUserName());
+		UserService userService = new UserService();
+		User user = new User(929, "andmail", "passddword", "CUNETE", true);
+		userService.persist(user);
+		List<User> users  = userService.findAll();
+		for(User usesr : users ) {
+			System.out.println(usesr.getUserName());
+		}
 		
-		/** delete **/
-		stockBo.delete(user2);
+//		WORKSS
+//		SessionFactory sessionFactory;
+//        sessionFactory = new Configuration()
+//                .configure() // configures settings from hibernate.cfg.xml
+//                .buildSessionFactory();
+// 
+//        Session session = sessionFactory.openSession();
+// 
+//        Transaction tx = session.beginTransaction();
+//        User user = new User();
+//		user.setId(999);
+//		user.setEmail("anemail");
+//		user.setAdmin(true);
+//		user.setPassword("verypassword");
+//		user.setUserName("CUNT");
+//        session.save(user);
+//        tx.commit();
+//        session.close();
+		
+//		@SuppressWarnings("resource")
+//		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring/config/BeanLocations.xml");
+//
+//		UserBo userBo = (UserBo) appContext.getBean("userDao");
+//
+//		/** insert **/
+//		User user = new User();
+//		user.setId(999);
+//		user.setEmail("anemail");
+//		user.setAdmin(true);
+//		user.setPassword("verypassword");
+//		user.setUserName("CUNT");
+//		userBo.save(user);
+//
+//		/** select **/
+//		User user2 = userBo.findById(999);
+//		System.out.println(user2);
+//
+//		/** update **/
+//		user2.setUserName("SONGOKU");
+//		userBo.update(user2);
+//
+//		User user3 = userBo.findById(999);
+//		System.out.println("Changed username to:" + user3.getUserName());
+//		
+//		/** delete **/
+//		userBo.delete(user2);
+//
+//		System.out.println("Done");
 
-		System.out.println("Done");
-
-		// model.addAttribute("message", "Welcome " + name);
-		// model.addAttribute("counter", ++counter);
-		// logger.debug("[welcomeName] counter : {}", counter);
-		// return VIEW_INDEX;
+		model.addAttribute("message", "Welcome " + name);
+		model.addAttribute("counter", ++counter);
+		logger.debug("[welcomeName] counter : {}", counter);
 		return VIEW_INDEX;
 	}
 

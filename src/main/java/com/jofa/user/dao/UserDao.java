@@ -1,14 +1,21 @@
 package com.jofa.user.dao;
 
-import com.jofa.user.model.User;
+import java.io.Serializable;
+import java.util.List;
 
-public interface UserDao {
+
+public interface UserDao <T, Id extends Serializable> {
+
+	public void persist(T entity);
 	
-	void save(User stock);
-	void update(User stock);
-	void delete(User stock);
-	User findById(Integer id);
-	User findByUsername(String username);
-	User findByEmail(String email);
-
+	public void update(T entity);
+	
+	public T findById(Id id);
+	
+	public void delete(T entity);
+	
+	public List<T> findAll();
+	
+	public void deleteAll();
+	
 }
