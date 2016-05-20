@@ -3,18 +3,20 @@ package com.jofa.user.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "user", uniqueConstraints = { 
 		@UniqueConstraint(columnNames = "id"),
 		@UniqueConstraint(columnNames = "email"), 
-		@UniqueConstraint(columnNames = "username"),
-		@UniqueConstraint(columnNames = "password"), 
-		@UniqueConstraint(columnNames = "admin") })
+		@UniqueConstraint(columnNames = "username") })
 public class User implements java.io.Serializable {
 
 	private static final long serialVersionUID = -972384603595328514L;
@@ -38,7 +40,8 @@ public class User implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name = "generator", strategy = "increment")
 	@Column(name = "id", unique = true, nullable = false, length = 10)
 	public Integer getId() {
 		return this.id;

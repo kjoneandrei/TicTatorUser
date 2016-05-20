@@ -35,12 +35,15 @@ public class UserController {
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public String welcomeName(@PathVariable String name, ModelMap model) {
 
+		model.addAttribute("message", "Welcome " + name);
+		model.addAttribute("counter", ++counter);
+		
 		UserService userService = new UserService();
 		User user = new User();
 		user.setAdmin(true);
-		user.setEmail("jada");
-		user.setPassword("shit");
-		user.setUserName("shitface");
+		user.setEmail("jada"+counter);
+		user.setPassword("shit"+counter);
+		user.setUserName("shitface"+counter);
 		userService.persist(user);
 		
 //		WORKSS
@@ -92,8 +95,6 @@ public class UserController {
 //
 //		System.out.println("Done");
 
-		model.addAttribute("message", "Welcome " + name);
-		model.addAttribute("counter", ++counter);
 		logger.debug("[welcomeName] counter : {}", counter);
 		return VIEW_INDEX;
 	}
