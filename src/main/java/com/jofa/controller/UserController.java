@@ -36,12 +36,12 @@ public class UserController {
 	public String welcomeName(@PathVariable String name, ModelMap model) {
 
 		UserService userService = new UserService();
-		User user = new User(929, "andmail", "passddword", "CUNETE", true);
+		User user = new User();
+		user.setAdmin(true);
+		user.setEmail("jada");
+		user.setPassword("shit");
+		user.setUserName("shitface");
 		userService.persist(user);
-		List<User> users  = userService.findAll();
-		for(User usesr : users ) {
-			System.out.println(usesr.getUserName());
-		}
 		
 //		WORKSS
 //		SessionFactory sessionFactory;

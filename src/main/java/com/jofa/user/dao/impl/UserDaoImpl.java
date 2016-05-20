@@ -43,6 +43,7 @@ public class UserDaoImpl implements UserDao<User, String> {
 	
 	private static SessionFactory getSessionFactory() {
 		Configuration configuration = new Configuration().configure();
+		configuration.addAnnotatedClass(User.class);
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties());
 		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
@@ -67,37 +68,35 @@ public class UserDaoImpl implements UserDao<User, String> {
 	
 	@Override
 	public void persist(User entity) {
-		// TODO Auto-generated method stub
+		currentSession.persist(entity);
 		
 	}
 
 	@Override
 	public void update(User entity) {
-		// TODO Auto-generated method stub
+		currentSession.update(entity);
 		
 	}
 
 	@Override
 	public User findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return currentSession.get(User.class, id);
 	}
 
 	@Override
 	public void delete(User entity) {
-		// TODO Auto-generated method stub
-		
+		currentSession.delete(entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentSession.createCriteria(User.class).list();
 	}
 
 	@Override
 	public void deleteAll() {
-		// TODO Auto-generated method stub
+		// TODO IMPLEMENT
 		
 	}
 

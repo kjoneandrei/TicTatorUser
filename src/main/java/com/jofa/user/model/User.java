@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "user", catalog = "db_user", uniqueConstraints = { 
+@Table(name = "user", uniqueConstraints = { 
 		@UniqueConstraint(columnNames = "id"),
 		@UniqueConstraint(columnNames = "email"), 
 		@UniqueConstraint(columnNames = "username"),
@@ -38,7 +38,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@GeneratedValue
 	@Column(name = "id", unique = true, nullable = false, length = 10)
 	public Integer getId() {
 		return this.id;
