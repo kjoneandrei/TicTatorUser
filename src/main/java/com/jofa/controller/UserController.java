@@ -37,7 +37,7 @@ public class UserController {
 		@SuppressWarnings("resource")
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring/config/BeanLocations.xml");
 
-		UserBo stockBo = (UserBo) appContext.getBean("userBo");
+		UserBo stockBo = (UserBo) appContext.getBean("UserBo");
 
 		/** insert **/
 		User user = new User();

@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jofa</groupId>
 	<artifactId>TicTatorUser</artifactId>
-	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TicTatorUser Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -11,13 +10,13 @@
 
 	<!-- PROPERTIES -->
 	<properties>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<spring.version>4.2.6.RELEASE</spring.version>
 		<jstl.version>1.2</jstl.version>
 		<junit.version>4.11</junit.version>
 		<logback.version>1.0.13</logback.version>
 		<mysql.version>6.0.2</mysql.version>
-		<jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
+		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
 	</properties>
 
 	<repositories>
@@ -90,7 +89,7 @@
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
-			<version>2.2</version>
+			<version>3.2.2</version>
 		</dependency>
 
 		<!-- MySQL database driver -->
@@ -100,57 +99,19 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
-		<!-- Hibernate framework -->
+		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
-			<groupId>hibernate</groupId>
-			<artifactId>hibernate3</artifactId>
-			<version>3.2.3.GA</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.1.0.Final</version>
 		</dependency>
 
-		<!-- Hibernate annotation -->
-		<dependency>
-			<groupId>hibernate-annotations</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.0.GA</version>
-		</dependency>
-
-		<dependency>
-			<groupId>hibernate-commons-annotations</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.0.0.GA</version>
-		</dependency>
-
-		<!-- Hibernate library dependecy start -->
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>antlr</groupId>
-			<artifactId>antlr</artifactId>
-			<version>2.7.7</version>
-		</dependency>
-		<!-- Hibernate library dependecy end -->
 
 		<!-- Javax Persistance -->
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
+			<version>1.0.2</version>
 		</dependency>
 
 	</dependencies>
@@ -177,7 +138,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.5.1</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
@@ -196,4 +157,5 @@
 
 		</plugins>
 	</build>
+	<packaging>war</packaging>
 </project>
