@@ -1,6 +1,7 @@
 package com.jofa.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,13 +36,21 @@ public class UserController {
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public String welcomeName(@PathVariable String name, ModelMap model) {
 
+		Random r = new Random();
 		UserService userService = new UserService();
 		User user = new User();
 		user.setAdmin(true);
-		user.setEmail("jada");
-		user.setPassword("shit");
-		user.setUserName("shitface");
+		user.setEmail("jada"+r.nextInt());
+		user.setPassword("shit"+r.nextInt());
+		user.setUserName("shitface"+r.nextInt());
 		userService.persist(user);
+		
+		
+		model.addAttribute("message", "Welcome " + name);
+		model.addAttribute("counter", ++counter);
+		logger.debug("[welcomeName] counter : {}", counter);
+		return VIEW_INDEX;
+		
 		
 //		WORKSS
 //		SessionFactory sessionFactory;
@@ -92,10 +101,6 @@ public class UserController {
 //
 //		System.out.println("Done");
 
-		model.addAttribute("message", "Welcome " + name);
-		model.addAttribute("counter", ++counter);
-		logger.debug("[welcomeName] counter : {}", counter);
-		return VIEW_INDEX;
 	}
 
 }

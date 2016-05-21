@@ -71,6 +71,12 @@ public class UserDaoImpl implements UserDao<User, String> {
 		currentSession.persist(entity);
 		
 	}
+	
+	@Override
+	public void saveOrUpdate(User entity){
+		currentSession.saveOrUpdate(entity);
+	}
+
 
 	@Override
 	public void update(User entity) {

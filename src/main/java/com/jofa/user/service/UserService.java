@@ -56,4 +56,13 @@ public class UserService {
 	public UserDaoImpl userDao() {
 		return userDaoImpl;
 	}
+
+	public void SaveOrUpdate(User user) {
+		// TODO Auto-generated method stub
+
+		userDaoImpl.openCurrentSessionwithTransaction();
+		userDaoImpl.saveOrUpdate(user);
+		userDaoImpl.closeCurrentSessionwithTransaction();
+		
+	}
 }

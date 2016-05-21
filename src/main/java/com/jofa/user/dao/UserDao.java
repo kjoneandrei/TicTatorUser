@@ -3,6 +3,8 @@ package com.jofa.user.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.jofa.user.model.User;
+
 
 public interface UserDao <T, Id extends Serializable> {
 
@@ -17,5 +19,7 @@ public interface UserDao <T, Id extends Serializable> {
 	public List<T> findAll();
 	
 	public void deleteAll();
+
+	public void saveOrUpdate(T entity);
 	
 }

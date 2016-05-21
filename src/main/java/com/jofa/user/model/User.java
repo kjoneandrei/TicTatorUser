@@ -10,11 +10,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "user", uniqueConstraints = { 
-		@UniqueConstraint(columnNames = "id"),
-		@UniqueConstraint(columnNames = "email"), 
-		@UniqueConstraint(columnNames = "username"),
-		@UniqueConstraint(columnNames = "password"), 
-		@UniqueConstraint(columnNames = "admin") })
+		@UniqueConstraint(columnNames = "id")})
 public class User implements java.io.Serializable {
 
 	private static final long serialVersionUID = -972384603595328514L;
@@ -39,7 +35,7 @@ public class User implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id", unique = true, nullable = false, length = 10)
+	@Column(name = "id", unique = true, nullable = false, length = 9)
 	public Integer getId() {
 		return this.id;
 	}
@@ -75,7 +71,7 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "admin", nullable = false)
+	@Column(name = "admin", nullable = false,unique = false)
 	public boolean isAdmin() {
 		return isAdmin;
 	}
