@@ -34,26 +34,6 @@ public class UserController {
 		return VIEW_INDEX;
 
 	}
-
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public String welcomeName(@PathVariable String name, ModelMap model) {
-
-		Random r = new Random();
-		UserService userService = new UserService();
-		User user = new User();
-		user.setAdmin(true);
-		user.setEmail("jada"+r.nextInt());
-		user.setPassword("shit"+r.nextInt());
-		user.setUsername("shitface"+r.nextInt());
-		userService.persist(user);
-		
-		
-		model.addAttribute("message", "Welcome " + name);
-		model.addAttribute("counter", ++counter);
-		logger.debug("[welcomeName] counter : {}", counter);
-		return VIEW_INDEX;
-		
-	}
 	
 	@RequestMapping(value = "/registerUser", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.POST)
 	public String registerUser(@RequestBody User user) {
@@ -70,16 +50,8 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value = "/{userId}.xml", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.GET)
-	public String getUserXML(@PathVariable Integer userId, ModelMap model) {
-
-//		TO BE IMPLEMENTED IN THE FUTURE
-		return VIEW_INDEX;
-		
-	}
-	
-	@RequestMapping(value = "/{userId}.json",  method = RequestMethod.GET)
-	public User getUserJSON( @PathVariable Integer userId) {
+	@RequestMapping(value = "/{userId}",  method = RequestMethod.GET)
+	public User getUser( @PathVariable Integer userId) {
 
 		UserService userService = new UserService();
 		User user = userService.findById(userId);
