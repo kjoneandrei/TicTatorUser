@@ -84,7 +84,7 @@ public class UserDaoImpl implements UserDao<User, String> {
 	}
 
 	@Override
-	public User findById(String id) {
+	public User findById(Integer id) {
 		return (User)currentSession.get(User.class, id);
 	}
 

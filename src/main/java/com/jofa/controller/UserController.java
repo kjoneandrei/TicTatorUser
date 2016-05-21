@@ -1,13 +1,9 @@
 package com.jofa.controller;
 
-import java.util.List;
 import java.util.Random;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +16,7 @@ import com.jofa.user.service.UserService;
 
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
 	private static int counter = 0;
@@ -73,14 +70,21 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value = "/getUser/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.GET)
-	public ResponseEntity<User> getUser(@PathVariable String userId, @RequestBody User user) {
+	@RequestMapping(value = "/{userId}.xml", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.GET)
+	public String getUserXML(@PathVariable Integer userId, ModelMap model) {
+
+//		TO BE IMPLEMENTED IN THE FUTURE
+		return VIEW_INDEX;
+		
+	}
+	
+	@RequestMapping(value = "/{userId}.json",  method = RequestMethod.GET)
+	public User getUserJSON( @PathVariable Integer userId) {
 
 		UserService userService = new UserService();
-		userService.findById(userId);
-		
-		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		User user = userService.findById(userId);
+
+		return user;
 		
 	}
 
