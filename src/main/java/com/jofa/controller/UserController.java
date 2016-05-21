@@ -4,17 +4,22 @@ import java.util.List;
 import java.util.Random;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.jofa.user.model.User;
 import com.jofa.user.service.UserService;
 
 
-@Controller
+@RestController
 public class UserController {
 
 	private static int counter = 0;
@@ -42,7 +47,7 @@ public class UserController {
 		user.setAdmin(true);
 		user.setEmail("jada"+r.nextInt());
 		user.setPassword("shit"+r.nextInt());
-		user.setUserName("shitface"+r.nextInt());
+		user.setUsername("shitface"+r.nextInt());
 		userService.persist(user);
 		
 		
@@ -51,56 +56,32 @@ public class UserController {
 		logger.debug("[welcomeName] counter : {}", counter);
 		return VIEW_INDEX;
 		
-		
-//		WORKSS
-//		SessionFactory sessionFactory;
-//        sessionFactory = new Configuration()
-//                .configure() // configures settings from hibernate.cfg.xml
-//                .buildSessionFactory();
-// 
-//        Session session = sessionFactory.openSession();
-// 
-//        Transaction tx = session.beginTransaction();
-//        User user = new User();
-//		user.setId(999);
-//		user.setEmail("anemail");
-//		user.setAdmin(true);
-//		user.setPassword("verypassword");
-//		user.setUserName("CUNT");
-//        session.save(user);
-//        tx.commit();
-//        session.close();
-		
-//		@SuppressWarnings("resource")
-//		ApplicationContext appContext = new ClassPathXmlApplicationContext("spring/config/BeanLocations.xml");
-//
-//		UserBo userBo = (UserBo) appContext.getBean("userDao");
-//
-//		/** insert **/
-//		User user = new User();
-//		user.setId(999);
-//		user.setEmail("anemail");
-//		user.setAdmin(true);
-//		user.setPassword("verypassword");
-//		user.setUserName("CUNT");
-//		userBo.save(user);
-//
-//		/** select **/
-//		User user2 = userBo.findById(999);
-//		System.out.println(user2);
-//
-//		/** update **/
-//		user2.setUserName("SONGOKU");
-//		userBo.update(user2);
-//
-//		User user3 = userBo.findById(999);
-//		System.out.println("Changed username to:" + user3.getUserName());
-//		
-//		/** delete **/
-//		userBo.delete(user2);
-//
-//		System.out.println("Done");
+	}
+	
+	@RequestMapping(value = "/registerUser", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.POST)
+	public String registerUser(@RequestBody User user) {
 
+		Random r = new Random();
+		UserService userService = new UserService();
+		user.setAdmin(true);
+		user.setEmail("jada"+r.nextInt());
+		user.setPassword("shit"+r.nextInt());
+		user.setUsername("shitface"+r.nextInt());
+		userService.persist(user);
+		
+		return VIEW_INDEX;
+		
+	}
+	
+	@RequestMapping(value = "/getUser/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.GET)
+	public ResponseEntity<User> getUser(@PathVariable String userId, @RequestBody User user) {
+
+		UserService userService = new UserService();
+		userService.findById(userId);
+		
+		
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+		
 	}
 
 }

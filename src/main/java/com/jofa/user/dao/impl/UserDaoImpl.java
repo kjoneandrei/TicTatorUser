@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
 
 import com.jofa.user.dao.UserDao;
@@ -42,11 +43,9 @@ public class UserDaoImpl implements UserDao<User, String> {
 	}
 	
 	private static SessionFactory getSessionFactory() {
-		Configuration configuration = new Configuration().configure();
-		configuration.addAnnotatedClass(User.class);
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-				.applySettings(configuration.getProperties());
-		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().
+		    configure().build();
+		SessionFactory sessionFactory = new Configuration().buildSessionFactory(serviceRegistry);
 		return sessionFactory;
 	}
 
@@ -86,7 +85,7 @@ public class UserDaoImpl implements UserDao<User, String> {
 
 	@Override
 	public User findById(String id) {
-		return currentSession.get(User.class, id);
+		return (User)currentSession.get(User.class, id);
 	}
 
 	@Override
@@ -104,6 +103,11 @@ public class UserDaoImpl implements UserDao<User, String> {
 	public void deleteAll() {
 		// TODO IMPLEMENT
 		
+	}
+
+	@Override
+	public void save(User entity) {
+		currentSession.save(entity);		
 	}
 
 

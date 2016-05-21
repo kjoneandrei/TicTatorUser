@@ -8,10 +8,10 @@
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/db_user?useSSL=false</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">password</property>
+		<property name="hibernate.connection.password">pepsimax</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="show_sql">true</property>
 		<property name="hibernate.current_session_context_class">thread</property>
-		<mapping class="com.jofa.user.model.User" />
+		<mapping resource="com/jofa/user/model/User.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

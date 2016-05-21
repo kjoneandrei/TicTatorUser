@@ -54,11 +54,11 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "username", unique = true, nullable = false, length = 45)
-	public String getUserName() {
+	public String getUsername() {
 		return this.username;
 	}
 
-	public void setUserName(String userName) {
+	public void setUsername(String userName) {
 		this.username = userName;
 	}
 

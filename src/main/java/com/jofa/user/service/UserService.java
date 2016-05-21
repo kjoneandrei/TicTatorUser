@@ -2,7 +2,6 @@ package com.jofa.user.service;
 
 import java.util.List;
 
-import com.jofa.user.dao.UserDao;
 import com.jofa.user.dao.impl.UserDaoImpl;
 import com.jofa.user.model.User;
 
@@ -17,6 +16,12 @@ public class UserService {
 	public void persist(User entity) {
 		userDaoImpl.openCurrentSessionwithTransaction();
 		userDaoImpl.persist(entity);
+		userDaoImpl.closeCurrentSessionwithTransaction();
+	}
+	
+	public void save(User entity) {
+		userDaoImpl.openCurrentSessionwithTransaction();
+		userDaoImpl.save(entity);
 		userDaoImpl.closeCurrentSessionwithTransaction();
 	}
 
