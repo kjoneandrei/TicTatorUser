@@ -39,18 +39,9 @@ public class UserController {
 
 	}
 	
-	@RequestMapping(value = "/registerUser", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},  method = RequestMethod.POST)
-	public String registerUser(@RequestBody User user) {
-
-		Random r = new Random();
-		user.setAdmin(true);
-		user.setEmail("jada"+r.nextInt());
-		user.setPassword("shit"+r.nextInt());
-		user.setUsername("shitface"+r.nextInt());
+	@RequestMapping(value = "/registerUser",  method = RequestMethod.POST)
+	public void registerUser(@RequestBody User user) {
 		userService.persist(user);
-		
-		return VIEW_INDEX;
-		
 	}
 	
 	@RequestMapping(value = "/{userId}",  method = RequestMethod.GET)
