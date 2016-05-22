@@ -68,6 +68,12 @@ public class UserService {
 		userDaoImpl.openCurrentSessionwithTransaction();
 		userDaoImpl.saveOrUpdate(user);
 		userDaoImpl.closeCurrentSessionwithTransaction();
-		
+	}
+	
+	public User findByUsername(String username) {
+		userDaoImpl.openCurrentSessionwithTransaction();
+		User user = userDaoImpl.findByUsername(username);
+		userDaoImpl.closeCurrentSessionwithTransaction();
+		return user;
 	}
 }

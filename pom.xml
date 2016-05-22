@@ -17,6 +17,8 @@
 		<logback.version>1.0.13</logback.version>
 		<mysql.version>5.1.39</mysql.version>
 		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
+		<oauth.version>2.0.9.RELEASE</oauth.version>
+		<jackson.version>2.7.4</jackson.version>
 	</properties>
 
 	<repositories>
@@ -32,14 +34,14 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.7.4</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<!-- Fasterxml Jackson Core - Jackson Databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.7.4</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 

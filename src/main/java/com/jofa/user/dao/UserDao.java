@@ -21,4 +21,6 @@ public interface UserDao <T, Id extends Serializable> {
 
 	public void saveOrUpdate(T entity);
 	
+	public T findByUsername(String username);
+	
 }

@@ -2,11 +2,13 @@ package com.jofa.user.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Property;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
 
@@ -108,6 +110,21 @@ public class UserDaoImpl implements UserDao<User, String> {
 	@Override
 	public void save(User entity) {
 		currentSession.save(entity);		
+	}
+
+	@Override
+	public User findByUsername(String username) {
+//		String hql = "FROM user E WHERE E.username = " + username;
+//		Query query = currentSession.createQuery(hql);
+//		return (User) query.list();
+//		
+//		currentSession.getNamedQuery("User.findByUsername").setString(0, username).list();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = currentSession.createCriteria(User.class)
+			    .add(Property.forName("username").eq(username))
+			    .list();
+		return users.get(0);
 	}
 
 
