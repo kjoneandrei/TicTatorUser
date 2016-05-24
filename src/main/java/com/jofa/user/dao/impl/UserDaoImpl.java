@@ -1,5 +1,6 @@
 package com.jofa.user.dao.impl;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -13,6 +14,8 @@ import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
 
 import com.jofa.user.dao.UserDao;
+import com.jofa.user.exception.UserNotFoundException;
+import com.jofa.user.exception.UserNotSavedException;
 import com.jofa.user.model.User;
 
 @Repository("userDao")
@@ -68,9 +71,8 @@ public class UserDaoImpl implements UserDao<User, String> {
 	}
 	
 	@Override
-	public void persist(User entity) {
+	public void persist(User entity) throws UserNotSavedException {
 		currentSession.persist(entity);
-		
 	}
 	
 	@Override
@@ -114,16 +116,23 @@ public class UserDaoImpl implements UserDao<User, String> {
 
 	@Override
 	public User findByUsername(String username) {
-//		String hql = "FROM user E WHERE E.username = " + username;
-//		Query query = currentSession.createQuery(hql);
-//		return (User) query.list();
-//		
-//		currentSession.getNamedQuery("User.findByUsername").setString(0, username).list();
-		
 		@SuppressWarnings("unchecked")
 		List<User> users = currentSession.createCriteria(User.class)
 			    .add(Property.forName("username").eq(username))
 			    .list();
+		return users.isEmpty() ? null : users.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public User findByUsernameAndPassword(User entity) {
+		List<User> users = currentSession.createCriteria(User.class)
+			    .add(Property.forName("username").eq(entity.getUsername()))
+			    .add(Property.forName("password").eq(entity.getPassword()))
+			    .list();
+		if(users == null || users.isEmpty()) {
+			throw new UserNotFoundException();
+		}
 		return users.get(0);
 	}
 

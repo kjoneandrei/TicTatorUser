@@ -76,4 +76,11 @@ public class UserService {
 		userDaoImpl.closeCurrentSessionwithTransaction();
 		return user;
 	}
+	
+	public User findByUsernameAndPassword(User user) {
+		userDaoImpl.openCurrentSessionwithTransaction();
+		User entity = userDaoImpl.findByUsernameAndPassword(user);
+		userDaoImpl.closeCurrentSessionwithTransaction();
+		return entity;
+	}
 }

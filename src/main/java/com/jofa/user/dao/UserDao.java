@@ -23,4 +23,6 @@ public interface UserDao <T, Id extends Serializable> {
 	
 	public T findByUsername(String username);
 	
+	public T findByUsernameAndPassword(T entity);
+	
 }
