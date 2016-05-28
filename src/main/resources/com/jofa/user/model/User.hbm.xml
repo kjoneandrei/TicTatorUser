@@ -1,20 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC 
- "-//Hibernate/Hibernate Mapping DTD//EN"
- "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
-
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 28, 2016 1:41:49 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-   <class name="com.jofa.user.model.User" table="user">
-      <meta attribute="class-description">
-         This class contains the user details. 
-      </meta>
-      <id name="id" type="int">
-      	<column name="id" sql-type="int(10) unsigned unique"/>      	
-         <generator class="identity"/>
-      </id>
-      <property name="email" column="email" type="string" length="64" unique="true" not-null="true"/>
-      <property name="username" column="username" type="string" length="45" unique="true" not-null="true"/>
-      <property name="password" column="password" type="string" length="45" not-null="true"/>
-      <property name="admin" column="admin" type="boolean" not-null="true"/>
-   </class>
+    <class name="com.jofa.model.User" table="user" catalog="db_user" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="email" type="string">
+            <column name="email" length="64" not-null="true" unique="true" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="45" not-null="true" unique="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="45" not-null="true" />
+        </property>
+        <one-to-one name="userRoles" class="com.jofa.model.UserRoles"></one-to-one>
+    </class>
 </hibernate-mapping>
