@@ -1,9 +1,9 @@
-package com.jofa.user.dao;
+package com.jofa.dao;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface UserDao <T, Id extends Serializable> {
+public interface GenericDao <T, Id extends Serializable> {
 
 	public void persist(T entity);
 	
@@ -20,9 +20,5 @@ public interface UserDao <T, Id extends Serializable> {
 	public void deleteAll();
 
 	public void saveOrUpdate(T entity);
-	
-	public T findByUsername(String username);
-	
-	public T findByUsernameAndPassword(T entity);
 	
 }

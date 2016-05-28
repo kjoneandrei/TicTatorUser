@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 27, 2016 9:03:45 PM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="com.jofa.model.LoginAttempt" table="login_attempt" catalog="db_user" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="integer">
+            <column name="user_id" not-null="true" />
+        </property>
+        <property name="userAgent" type="string">
+            <column name="user_agent" length="1024" not-null="true" />
+        </property>
+        <property name="successful" type="boolean">
+            <column name="successful" not-null="true" />
+        </property>
+        <property name="ip" type="string">
+            <column name="ip" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

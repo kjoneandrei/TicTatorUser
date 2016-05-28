@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 28, 2016 1:41:49 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="com.jofa.model.UserRoles" table="user_roles" catalog="db_user" optimistic-lock="version">
+        <id name="userId" type="int">
+            <column name="user_id" />
+            <generator class="foreign">
+                <param name="property">user</param>
+            </generator>
+        </id>
+        <one-to-one name="user" class="com.jofa.model.User" constrained="true"></one-to-one>
+        <property name="role" type="string">
+            <column name="role" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
