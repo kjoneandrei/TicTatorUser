@@ -9,8 +9,8 @@
 			<column name="id" />
 			<generator class="identity" />
 		</id>
-		<property name="userId" type="integer">
-			<column name="user_id" not-null="true" />
+		<property name="username" type="string">
+			<column name="username" not-null="true" />
 		</property>
 		<property name="userAgent" type="string">
 			<column name="user_agent" length="1024" not-null="true" />
@@ -20,6 +20,10 @@
 		</property>
 		<property name="ip" type="string">
 			<column name="ip" length="45" not-null="true" />
+		</property>
+		<property name="attemptDate" type="timestamp"> 
+			<column name="attemptDate" sql-type="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+				length="19" />
 		</property>
 	</class>
 </hibernate-mapping>

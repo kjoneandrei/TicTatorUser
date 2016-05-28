@@ -16,6 +16,11 @@
 	<context:component-scan base-package="com.jofa.*" />
 	<context:annotation-config />
 
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:properties/hibernate.properties" />
+	</bean>
+
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -43,6 +48,12 @@
 	</bean>
 
 	<bean id="userRolesDao" class="com.jofa.dao.impl.UserRolesDaoImpl">
+		<constructor-arg>
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="loginAttemptDao" class="com.jofa.dao.impl.LoginAttemptDaoImpl">
 		<constructor-arg>
 			<ref bean="sessionFactory" />
 		</constructor-arg>
