@@ -1,5 +1,4 @@
 package com.jofa.model;
-// Generated May 28, 2016 1:41:49 AM by Hibernate Tools 4.3.1.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@XmlRootElement
 @Entity
 @Table(name = "user_roles", catalog = "db_user")
 public class UserRoles implements java.io.Serializable
@@ -50,6 +53,7 @@ public class UserRoles implements java.io.Serializable
 	}
 
 	@JsonIgnore
+	@XmlTransient
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	public User getUser()

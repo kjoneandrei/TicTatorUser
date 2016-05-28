@@ -4,8 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.Date;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -16,21 +21,23 @@ public class LoginAttempt implements java.io.Serializable
 
 	private static final long serialVersionUID = -2274506872798547691L;
 	private Integer id;
-	private Integer userId;
+	private String userName;
 	private String userAgent;
 	private boolean successful;
 	private String ip;
+	private Date attemptDate;
 
 	public LoginAttempt()
 	{
 	}
 
-	public LoginAttempt(Integer userId, String userAgent, boolean successful, String ip)
+	public LoginAttempt(String userName, String userAgent, boolean successful, String ip, Date attemptDate)
 	{
-		this.userId = userId;
+		this.userName = userName;
 		this.userAgent = userAgent;
 		this.successful = successful;
 		this.ip = ip;
+		this.attemptDate = attemptDate;
 	}
 
 	@Id
@@ -47,15 +54,15 @@ public class LoginAttempt implements java.io.Serializable
 		this.id = id;
 	}
 
-	@Column(name = "user_id", nullable = false)
-	public Integer getUserId()
+	@Column(name = "username", nullable = false)
+	public String getUsername()
 	{
-		return this.userId;
+		return this.userName;
 	}
 
-	public void setUserId(Integer userId)
+	public void setUsername(String userName)
 	{
-		this.userId = userId;
+		this.userName = userName;
 	}
 
 	@Column(name = "user_agent", nullable = false, length = 1024)
@@ -89,6 +96,16 @@ public class LoginAttempt implements java.io.Serializable
 	public void setIp(String ip)
 	{
 		this.ip = ip;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "attempt_date", length = 19,columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP",insertable=false, updatable=false)
+	public Date getAttemptDate() {
+		return this.attemptDate;
+	}
+
+	public void setAttemptDate(Date attemptDate) {
+		this.attemptDate = attemptDate;
 	}
 
 }
