@@ -1,24 +1,29 @@
 package com.jofa.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface GenericDao <T, Id extends Serializable> {
+import org.hibernate.Session;
 
-	public void persist(T entity);
-	
-	public void save(T entity);
-	
-	public void update(T entity);
-	
+@SuppressWarnings("hiding")
+public interface GenericDao<T, Integer>
+{
+
+	public Class<T> getPersistentClass();
+
+	public Session getSession();
+
 	public T findById(Integer id);
-	
-	public void delete(T entity);
-	
-	public List<T> findAll();
-	
-	public void deleteAll();
 
-	public void saveOrUpdate(T entity);
-	
+	public List<T> findAll();
+
+	public T save(T entity);
+
+	public T update(T entity);
+
+	public void delete(T entity);
+
+	public void flush();
+
+	public void clear();
+
 }

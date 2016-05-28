@@ -1,28 +1,9 @@
 package com.jofa.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import com.jofa.model.LoginAttempt;
 
-public interface LoginAttemptDao <T, Id extends Serializable> {
+public interface LoginAttemptDao
+{
 
-	public void persist(T entity);
-	
-	public void save(T entity);
-	
-	public void update(T entity);
-	
-	public T findById(Integer id);
-	
-	public void delete(T entity);
-	
-	public List<T> findAll();
-	
-	public void deleteAll();
-
-	public void saveOrUpdate(T entity);
-	
-	public T findByUsername(String username);
-	
-	public T findByUsernameAndPassword(T entity);
-	
+	public LoginAttempt findAllByUserId();
 }

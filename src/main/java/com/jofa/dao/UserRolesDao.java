@@ -1,9 +1,10 @@
 package com.jofa.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import com.jofa.model.UserRoles;
 
-public interface UserRolesDao <T, Id extends Serializable> {
+public interface UserRolesDao extends GenericDao<UserRoles, Integer>
+{
 
-	
+	public UserRoles findByUserId(Integer userId);
+
 }
