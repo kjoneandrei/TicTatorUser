@@ -12,8 +12,8 @@
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="show_sql">true</property>
 		<property name="hibernate.current_session_context_class">thread</property>
-		<mapping resource="com/jofa/user/model/User.hbm.xml"/>
-		<mapping resource="com/jofa/user/model/UserRoles.hbm.xml"/>
-		<mapping resource="com/jofa/user/model/LoginAttempt.hbm.xml"/>
+		<mapping resource="com/jofa/user/model/User.hbm.xml" />
+		<mapping resource="com/jofa/user/model/UserRoles.hbm.xml" />
+		<mapping resource="com/jofa/user/model/LoginAttempt.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

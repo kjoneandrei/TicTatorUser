@@ -3,20 +3,21 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 28, 2016 1:41:49 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="com.jofa.model.User" table="user" catalog="db_user" optimistic-lock="version">
-        <id name="id" type="java.lang.Integer">
-            <column name="id" />
-            <generator class="identity" />
-        </id>
-        <property name="email" type="string">
-            <column name="email" length="64" not-null="true" unique="true" />
-        </property>
-        <property name="username" type="string">
-            <column name="username" length="45" not-null="true" unique="true" />
-        </property>
-        <property name="password" type="string">
-            <column name="password" length="45" not-null="true" />
-        </property>
-        <one-to-one name="userRoles" class="com.jofa.model.UserRoles"></one-to-one>
-    </class>
+	<class name="com.jofa.model.User" table="user" catalog="db_user"
+		optimistic-lock="version">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<property name="email" type="string">
+			<column name="email" length="64" not-null="true" unique="true" />
+		</property>
+		<property name="username" type="string">
+			<column name="username" length="45" not-null="true" unique="true" />
+		</property>
+		<property name="password" type="string">
+			<column name="password" length="45" not-null="true" />
+		</property>
+		<one-to-one name="userRoles" class="com.jofa.model.UserRoles"></one-to-one>
+	</class>
 </hibernate-mapping>

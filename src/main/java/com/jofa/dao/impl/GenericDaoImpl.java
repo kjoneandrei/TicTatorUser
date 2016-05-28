@@ -4,109 +4,138 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import org.hibernate.criterion.Criterion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jofa.dao.GenericDao;
 
-public abstract class GenericDaoImpl<T, Id extends Serializable> implements GenericDao<T, Serializable> {
+/**
+ * If you get an error you might want to start a transaction and commit it after
+ * success.
+ **/
 
-	private static SessionFactory sessionFactory;
+@SuppressWarnings("hiding")
+public abstract class GenericDaoImpl<T, Integer extends Serializable> implements GenericDao<T, Integer>
+{
 
-	protected Session currentSession;
-	protected Transaction currentTransaction;
+	private static final Logger LOG = LoggerFactory.getLogger(GenericDaoImpl.class);
 
-	public GenericDaoImpl() {
-		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().configure().build();
-		this.sessionFactory = new Configuration().buildSessionFactory(serviceRegistry);
-	}
-	
-	@SuppressWarnings({ "unused", "unchecked" })
-	private Class<T> getClassType() {
-		return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-	}
+	@Autowired
+	private SessionFactory sessionFactory;
 
-	public Session openCurrentSession() {
-		currentSession = sessionFactory.openSession();
-		return currentSession;
-	}
+	private Class<T> persistentClass;
 
-	public Session openCurrentSessionwithTransaction() {
-		currentSession = sessionFactory.openSession();
-		currentTransaction = currentSession.beginTransaction();
-		return currentSession;
-	}
-
-	public void closeCurrentSession() {
-		currentSession.close();
-	}
-
-	public void closeCurrentSessionwithTransaction() {
-		currentTransaction.commit();
-		currentSession.close();
-	}
-
-	public Session getCurrentSession() {
-		return currentSession;
-	}
-
-	public void setCurrentSession(Session currentSession) {
-		this.currentSession = currentSession;
-	}
-
-	public Transaction getCurrentTransaction() {
-		return currentTransaction;
-	}
-
-	public void setCurrentTransaction(Transaction currentTransaction) {
-		this.currentTransaction = currentTransaction;
+	@SuppressWarnings("unchecked")
+	public GenericDaoImpl()
+	{
+		this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
 	}
 
 	@Override
-	public void persist(T entity) {
-		currentSession.persist(entity);
+	public Session getSession()
+	{
+		return sessionFactory.getCurrentSession();
 	}
 
 	@Override
-	public void saveOrUpdate(T entity) {
-		currentSession.saveOrUpdate(entity);
+	public Class<T> getPersistentClass()
+	{
+		return persistentClass;
 	}
 
 	@Override
-	public void update(T entity) {
-		currentSession.update(entity);
+	public T findById(Integer id)
+	{
+		try
+		{
+			sessionFactory.getCurrentSession().beginTransaction();
+			T entity = (T) getSession().get(getPersistentClass(), id);
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			return entity;
+		} catch (HibernateException e)
+		{
+			LOG.error(e.toString());
+			return null;
+		}
+	}
+
+	@Override
+	public List<T> findAll()
+	{
+		return findByCriteria();
+	}
+
+	@Override
+	public T update(T entity)
+	{
+		try
+		{
+			getSession().update(entity);
+		} catch (HibernateException e)
+		{
+			LOG.error(e.toString());
+		}
+		return entity;
+	}
+
+	@Override
+	public T save(T entity)
+	{
+		try
+		{
+			sessionFactory.getCurrentSession().beginTransaction();
+			getSession().save(entity);
+			sessionFactory.getCurrentSession().getTransaction().commit();
+		} catch (HibernateException e)
+		{
+			LOG.error(e.toString());
+		}
+		return entity;
+	}
+
+	@Override
+	public void delete(T entity)
+	{
+		try
+		{
+			getSession().delete(entity);
+		} catch (HibernateException e)
+		{
+			LOG.error(e.toString());
+		}
 
 	}
 
 	@Override
-	public T findById(Integer id) {
-		return (T) currentSession.get(getClassType(), id);
+	public void flush()
+	{
+		getSession().flush();
 	}
 
 	@Override
-	public void delete(T entity) {
-		currentSession.delete(entity);
+	public void clear()
+	{
+		getSession().clear();
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findAll() {
-		return currentSession.createCriteria(getClassType()).list();
-	}
+	public List<T> findByCriteria(Criterion... criterion)
+	{
+		Criteria crit = getSession().createCriteria(getPersistentClass());
+		crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		for (Criterion c : criterion)
+		{
+			crit.add(c);
+		}
 
-	@Override
-	public void deleteAll() {
-		// TODO IMPLEMENT
-
-	}
-
-	@Override
-	public void save(T entity) {
-		currentSession.save(entity);
+		return crit.list();
 	}
 
 }
