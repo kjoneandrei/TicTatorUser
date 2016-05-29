@@ -5,17 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @XmlRootElement
 @Entity
 @Table(name = "user", catalog = "db_user", uniqueConstraints = { @UniqueConstraint(columnNames = "email"),
 		@UniqueConstraint(columnNames = "username") })
-public class User implements java.io.Serializable
+public class User implements java.io.Serializable, UserDetails
 {
 
 	private static final long serialVersionUID = -1596448129385958832L;
@@ -100,6 +108,42 @@ public class User implements java.io.Serializable
 	public void setUserRoles(UserRoles userRoles)
 	{
 		this.userRoles = userRoles;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities()
+	{
+		List<UserRoles> auths = new ArrayList<UserRoles>();
+		auths.add(this.userRoles);
+		return auths;
+	}
+
+	@Override
+	public boolean isAccountNonExpired()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled()
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
