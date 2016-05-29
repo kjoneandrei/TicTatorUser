@@ -51,7 +51,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDa
 		{
 			return null;
 		}
-		return user;
+		return users.get(0);
 	}
 
 	@Override
