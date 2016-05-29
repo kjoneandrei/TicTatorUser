@@ -65,19 +65,20 @@ public class UserController
 
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/authorize", method = RequestMethod.POST)
 	public ResponseEntity getUser(@RequestBody LoginContext loginContext)
 	{
-		if (userDao.authorize(loginContext.getUser()) == true)
+		User user = userDao.authorize(loginContext.getUser());
+		if (user != null)
 		{
 			loginContext.getLoginAttempt().setSuccessful(true);
 			loginAttemptDao.save(loginContext.getLoginAttempt());
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity(user, HttpStatus.OK);
 		}
 		loginContext.getLoginAttempt().setSuccessful(false);
 		loginAttemptDao.save(loginContext.getLoginAttempt());
-		return new ResponseEntity(HttpStatus.NOT_FOUND);
+		return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
 	}
 
 }
