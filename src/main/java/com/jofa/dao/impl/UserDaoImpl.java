@@ -40,7 +40,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDa
 	@SuppressWarnings("unchecked")
 	@Transactional
 	@Override
-	public boolean authorize(User user)
+	public User authorize(User user)
 	{
 		sessionFactory.getCurrentSession().beginTransaction();
 		List<User> users = sessionFactory.getCurrentSession().createCriteria(User.class)
@@ -49,9 +49,9 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDa
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		if (users == null || users.isEmpty())
 		{
-			return false;
+			return null;
 		}
-		return true;
+		return user;
 	}
 
 	@Override
