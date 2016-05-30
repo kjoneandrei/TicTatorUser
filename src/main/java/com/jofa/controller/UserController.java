@@ -15,7 +15,6 @@ import com.jofa.dao.LoginAttemptDao;
 import com.jofa.dao.UserDao;
 import com.jofa.dao.UserRolesDao;
 import com.jofa.model.LoginAttempt;
-import com.jofa.model.LoginContext;
 import com.jofa.model.User;
 import com.jofa.model.UserRoles;
 
@@ -29,27 +28,29 @@ public class UserController
 
 	@Autowired
 	private UserRolesDao userRolesDao;
-	
+
 	@Autowired
 	private LoginAttemptDao loginAttemptDao;
 
 	@SuppressWarnings("unused")
 	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity registerUser(@RequestBody User user)
 	{
+		User foundUser = null;
 		try
 		{
 			userDao.save(user);
-			UserRoles userRoles = new UserRoles(user, user.getUserRoles().getRole());
+			foundUser = userDao.findByUsername(user.getUsername());
+			UserRoles userRoles = new UserRoles(foundUser, "ROLE_USER");
 			userRolesDao.save(userRoles);
 		} catch (ConstraintViolationException e)
 		{
-			return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity(foundUser, HttpStatus.NOT_ACCEPTABLE);
 		}
-		return new ResponseEntity(HttpStatus.OK);
+		return new ResponseEntity(foundUser, HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -65,19 +66,48 @@ public class UserController
 
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/authorize", method = RequestMethod.POST)
-	public ResponseEntity getUser(@RequestBody LoginContext loginContext)
+	public ResponseEntity authorize(@RequestBody User user)
 	{
-		if (userDao.authorize(loginContext.getUser()) == true)
+		User formUser = userDao.authorize(user);
+		if (formUser != null)
 		{
-			loginContext.getLoginAttempt().setSuccessful(true);
-			loginAttemptDao.save(loginContext.getLoginAttempt());
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity(formUser, HttpStatus.OK);
 		}
-		loginContext.getLoginAttempt().setSuccessful(false);
-		loginAttemptDao.save(loginContext.getLoginAttempt());
-		return new ResponseEntity(HttpStatus.NOT_FOUND);
+		return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/loginAttempt", method = RequestMethod.POST)
+     public ResponseEntity loginAttempt(@RequestBody LoginAttempt loginAttempt)
+    {
+		try{
+			loginAttemptDao.save(loginAttempt);
+			return new ResponseEntity(loginAttempt, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+        }
+		
+    }
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/findByUsername/{username}", method = RequestMethod.GET)
+     public ResponseEntity findByUsername(@PathVariable String username)
+    {
+		User user = null;
+		try{
+			System.out.println("I'm trying boos... to find username:" + username);
+			user = userDao.findByUsername(username);
+			if(user!=null) {
+				return new ResponseEntity(userDao.findByUsername(username), HttpStatus.OK);
+			} else {
+				return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+			}
+		} catch(Exception e) {
+			return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+        }
+		
+    }
 
 }

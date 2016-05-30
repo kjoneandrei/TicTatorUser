@@ -47,6 +47,7 @@
 		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
 		<oauth.version>2.0.9.RELEASE</oauth.version>
 		<jackson.version>2.7.4</jackson.version>
+		<spring.security.version>4.1.0.RELEASE</spring.security.version>
 	</properties>
 
 	<repositories>
@@ -64,7 +65,12 @@
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>8.5.2</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
 
 		<!-- FasterXML Jackson Core -->
 		<dependency>
