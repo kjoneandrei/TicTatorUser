@@ -35,20 +35,22 @@ public class UserController
 	@SuppressWarnings("unused")
 	private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity registerUser(@RequestBody User user)
 	{
+		User foundUser = null;
 		try
 		{
 			userDao.save(user);
-			UserRoles userRoles = new UserRoles(user, user.getUserRoles().getRole());
+			foundUser = userDao.findByUsername(user.getUsername());
+			UserRoles userRoles = new UserRoles(foundUser, "ROLE_USER");
 			userRolesDao.save(userRoles);
 		} catch (ConstraintViolationException e)
 		{
-			return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity(foundUser, HttpStatus.NOT_ACCEPTABLE);
 		}
-		return new ResponseEntity(HttpStatus.OK);
+		return new ResponseEntity(foundUser, HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -83,6 +85,25 @@ public class UserController
 		try{
 			loginAttemptDao.save(loginAttempt);
 			return new ResponseEntity(loginAttempt, HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+        }
+		
+    }
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/findByUsername/{username}", method = RequestMethod.GET)
+     public ResponseEntity findByUsername(@PathVariable String username)
+    {
+		User user = null;
+		try{
+			System.out.println("I'm trying boos... to find username:" + username);
+			user = userDao.findByUsername(username);
+			if(user!=null) {
+				return new ResponseEntity(userDao.findByUsername(username), HttpStatus.OK);
+			} else {
+				return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+			}
 		} catch(Exception e) {
 			return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
         }
