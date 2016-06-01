@@ -15,6 +15,7 @@ import com.jofa.dao.LoginAttemptDao;
 import com.jofa.dao.UserDao;
 import com.jofa.dao.UserRolesDao;
 import com.jofa.model.LoginAttempt;
+import com.jofa.model.SimpleUser;
 import com.jofa.model.User;
 import com.jofa.model.UserRoles;
 
@@ -37,12 +38,12 @@ public class UserController
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity registerUser(@RequestBody User user)
+	public ResponseEntity registerUser(@RequestBody SimpleUser user)
 	{
 		User foundUser = null;
 		try
 		{
-			userDao.save(user);
+			userDao.save(new User(user.getEmail(),user.getUsername(),user.getPassword()));
 			foundUser = userDao.findByUsername(user.getUsername());
 			UserRoles userRoles = new UserRoles(foundUser, "ROLE_USER");
 			userRolesDao.save(userRoles);
@@ -67,18 +68,6 @@ public class UserController
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/authorize", method = RequestMethod.POST)
-	public ResponseEntity authorize(@RequestBody User user)
-	{
-		User formUser = userDao.authorize(user);
-		if (formUser != null)
-		{
-			return new ResponseEntity(formUser, HttpStatus.OK);
-		}
-		return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/loginAttempt", method = RequestMethod.POST)
      public ResponseEntity loginAttempt(@RequestBody LoginAttempt loginAttempt)
     {
@@ -97,10 +86,9 @@ public class UserController
     {
 		User user = null;
 		try{
-			System.out.println("I'm trying boos... to find username:" + username);
 			user = userDao.findByUsername(username);
 			if(user!=null) {
-				return new ResponseEntity(userDao.findByUsername(username), HttpStatus.OK);
+				return new ResponseEntity(user, HttpStatus.OK);
 			} else {
 				return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
 			}
