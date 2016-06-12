@@ -1,5 +1,6 @@
 package com.jofa.controller;
 
+import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,15 +86,15 @@ public class UserController
      public ResponseEntity findByUsername(@PathVariable String username)
     {
 		User user = null;
-		try{
+		try {
 			user = userDao.findByUsername(username);
 			if(user!=null) {
 				return new ResponseEntity(user, HttpStatus.OK);
 			} else {
 				return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
 			}
-		} catch(Exception e) {
-			return new ResponseEntity(new User(), HttpStatus.NOT_FOUND);
+		} catch(HibernateException e) {
+			return new ResponseEntity(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 		
     }
